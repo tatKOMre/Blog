@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="../css/registration.css">
+    <script src="../js/register.js"></script>
+</head>
+
+<body>
+    <form enctype="multipart/form-data" method="post" onsubmit="return registerUser();">
+        <label for="login" id="ll">Логин</label>
+        <input type="text" placeholder="Логин" id="login" required autocomplete="on">
+        <label for="password" id="pl">Пароль</label>
+        <input type="password" placeholder="Пароль" id="password" required autocomplete="off">
+        <label for="password" id="plr">Повторите пароль</label>
+        <input type="password" placeholder="Пароль" id="anpassword" required autocomplete="off">
+        <button style="--clr:#e94560" id="sub-text">Зарегистрироваться</button>
+    </form>
+</body>
+</html>
