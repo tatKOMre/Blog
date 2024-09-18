@@ -3,17 +3,55 @@ version: '3.9'
 services:
   PostSQL:
     container_name: PostSQL
+    restart: always
+    
     ports:
       - "5432:5432"
+    
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=admin
+      - POSTGRES_DB=blog-db
+    
     image: postgres:13-alpine
+
   Pgadmin:
     container_name: Pgadmin
+    restart: always
+
     ports:
       - "5050:80"
+    
     environment:
       PGADMIN_DEFAULT_EMAIL: fuck@niggers.ru
       PGADMIN_DEFAULT_PASSWORD: fuck
+    
     image: dpage/pgadmin4
+    
+    depends_on:
+      - PostSQL
+  
+  blog:
+    container_name: blog
+    restart: always
+
+    build:
+      context: ../..
+      dockerfile: deployments/docker/Dockerfile
+    
+    command: ./server
+
+    environment:
+      - JWT=fuck
+      - HOST=:8000
+      - DB_USER=admin
+      - DB_PASSWORD=root
+      - DB_NAME=blog-db
+      - DB_HOST=PostSQL
+      - DB_PORT=5432
+
+    ports:
+      - 8000:8000
+
+    depends_on:
+      - PostSQL

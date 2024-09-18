@@ -11,6 +11,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+/*
+Тут функции логина/регистрации надо ебануть, это тебе известно,
+При логине клади пользователю в куки файлы токен,
+потом через middleware для авторизации будешь его получать и проверять
+В pkg/cookie функции для этого есть
+*/
+
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	ctx := context.WithValue(context.Background(), "request", r)
 	var user model.User
