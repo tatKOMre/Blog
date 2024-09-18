@@ -6,6 +6,4 @@ type Middleware struct {
 
 func New(key []byte) *Middleware {
 	return &Middleware{
-		Signkey: key,
-	}
 }
