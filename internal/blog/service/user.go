@@ -39,3 +39,24 @@ func (s *Service) DeleteUser(ctx context.Context, id uint, act *token.Claims) er
 	result := s.Repository.DeleteUser(ctx, id)
 	return result
 }
+func (s *Service) Singin(ctx context.Context, login string, password string) (string, error) {
+	user, err := s.Repository.GetUserByLogin(ctx, login)
+	if err != nil {
+		return "", err
+	}
+	if password != user.Password {
+		return "", wrongpass
+	}
+	claims := token.Claims{
+		ID:         user.ID,
+		Name:       user.Name,
+		Password:   user.Password,
+		Permission: user.Permission,
+	}
+
+	tkn, err := token.GenerateJWT(&claims, s.SignKey)
+	if err != nil {
+		return "", err
+	}
+	return tkn, err
+}

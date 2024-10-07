@@ -12,6 +12,7 @@ type Service interface {
 	CreateUser(context.Context, model.User, *token.Claims) error
 	UpdateUser(context.Context, model.User, *token.Claims) error
 	DeleteUser(context.Context, uint, *token.Claims) error
+	Singin(context.Context, string, string) (string, error)
 	// Взаимодействие с публикациями
 	GetPublication(context.Context, uint, *token.Claims) (model.Publication, error)
 	CreatePublication(context.Context, model.Publication, *token.Claims) error

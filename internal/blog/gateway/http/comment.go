@@ -39,12 +39,3 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request, act *tok
 	}
 	w.WriteHeader(http.StatusOK)
 }
-
-if r.Method == http.MethodGet {
-
-}
-if r.Method == http.MethodPost {
-	r.ParseForm()
-
-	title := r.FormValue("title")
-}

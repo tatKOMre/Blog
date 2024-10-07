@@ -23,3 +23,8 @@ func (r *Repository) DeleteUser(ctx context.Context, id uint) error {
 	result := r.DB.Delete(&user, id)
 	return result.Error
 }
+func (r *Repository) GetUserByLogin(ctx context.Context, login string) (model.User, error) {
+	var user model.User
+	result := r.DB.Where("login = ?", login).First(&user)
+	return user, result.Error
+}

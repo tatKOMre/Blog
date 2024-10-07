@@ -6,17 +6,11 @@ import (
 	"net/http"
 	"strconv"
 	"tatKOM/model"
+	"tatKOM/pkg/cookie"
 	"tatKOM/pkg/token"
 
 	"github.com/gorilla/mux"
 )
-
-/*
-Тут функции логина/регистрации надо ебануть, это тебе известно,
-При логине клади пользователю в куки файлы токен,
-потом через middleware для авторизации будешь его получать и проверять
-В pkg/cookie функции для этого есть
-*/
 
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	ctx := context.WithValue(context.Background(), "request", r)
@@ -62,4 +56,23 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, act *token.Cla
 		return
 	}
 	json.NewEncoder(w).Encode(&user)
+}
+func (h *Handler) Singin(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+		login := r.FormValue("login")
+		password := r.FormValue("password")
+		ctx := context.WithValue(context.Background(), "request", r)
+		tkn, err := h.Service.Singin(ctx, login, password)
+
+		if err != nil {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+			return
+		}
+
+		cookie.SetCookie(w, "token", tkn)
+		http.Redirect(w, r, "/", http.StatusMovedPermanently)
+	} else if r.Method == http.MethodGet {
+		http.ServeFile(w, r, "web/html/login.html")
+	}
 }

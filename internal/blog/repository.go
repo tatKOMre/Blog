@@ -12,6 +12,7 @@ type Repository interface {
 	CreateUser(context.Context, model.User) error
 	UpdateUser(context.Context, model.User) error
 	DeleteUser(context.Context, uint) error
+	GetUserByLogin(context.Context, string) (model.User, error)
 	// Взаимодействие с публикациями
 	GetPublication(context.Context, uint) (model.Publication, error)
 	GetAllPublications(context.Context) ([]model.Publication, error)
