@@ -44,6 +44,17 @@ func (s *Service) Singin(ctx context.Context, login string, password string) (st
 	if err != nil {
 		return "", err
 	}
+	// если не впадлу, то можешь хэшей нахуячить
+	/*
+	import "tatKOM/pkg/hash"
+
+	if hash.Hash(password) != user.Password {
+		return "", wrongpass
+	}
+
+	тогда надо еще при сохранении пользователя пароль хэшировать
+	*/
+
 	if password != user.Password {
 		return "", wrongpass
 	}

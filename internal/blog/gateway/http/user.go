@@ -12,6 +12,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+/*
+ Продумай какие нас сайте будут страницы, продуймай какие для каждой из них нужны данные,
+ Например, для страницы с постом понадобится запись поста из бд и все комментарии к нему.
+ Тоесть, в gateway функции этой страницы понадобится вызывать service.GetPost, service.GetCommentsFor
+ И так со всеми страницами на сайте, пока что можешь таким образом переделать, потом с папкой app/ разберемся
+*/
+
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	ctx := context.WithValue(context.Background(), "request", r)
 	var user model.User
@@ -57,6 +64,8 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, act *token.Cla
 	}
 	json.NewEncoder(w).Encode(&user)
 }
+
+// Годно
 func (h *Handler) Singin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		r.ParseForm()
