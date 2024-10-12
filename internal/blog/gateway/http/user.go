@@ -21,13 +21,21 @@ import (
 
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	ctx := context.WithValue(context.Background(), "request", r)
-	var user model.User
-	err := h.Service.CreateUser(ctx, user, act)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+		user := model.User{
+			Name:       r.FormValue("login"),
+			Password:   r.FormValue("password"),
+			Permission: false,
+		}
+		err := h.Service.CreateUser(ctx, user, act)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if r.Method == http.MethodGet {
+		http.ServeFile(w, r, "web/html/register.html")
 	}
-	w.WriteHeader(http.StatusCreated)
 }
 func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])

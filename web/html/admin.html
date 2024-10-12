@@ -6,6 +6,7 @@
     <title>Админ панель</title>
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/admin.js"></script>
 </head>
 <body>
     <div class="header">
@@ -21,12 +22,12 @@
       </div>
       <div class="content">
         <div class="sides">
-            <form method="post">
+            <form method="post" onsubmit="return CreatePublication();">
                 <p>
-                    <input type="text" name="title" placeholder="Title" id="">
+                    <input type="text" name="title" placeholder="Title" id="title">
                 </p>
                 <p>
-                    <textarea name="text" placeholder="Text" id=""></textarea>
+                    <textarea name="text" placeholder="Text" id="text"></textarea>
                 </p>
                 <input type="submit" value="post">
             </form>

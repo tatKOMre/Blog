@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"tatKOM/model"
+	"tatKOM/pkg/hash"
 	"tatKOM/pkg/token"
 )
 
@@ -22,6 +23,7 @@ func (s *Service) CreateUser(ctx context.Context, user model.User, act *token.Cl
 	if !act.Permission {
 		return errNotPermission
 	}
+	user.Password = hash.Hash(user.Password)
 	result := s.Repository.CreateUser(ctx, user)
 	return result
 }
@@ -44,18 +46,8 @@ func (s *Service) Singin(ctx context.Context, login string, password string) (st
 	if err != nil {
 		return "", err
 	}
-	// если не впадлу, то можешь хэшей нахуячить
-	/*
-	import "tatKOM/pkg/hash"
 
 	if hash.Hash(password) != user.Password {
-		return "", wrongpass
-	}
-
-	тогда надо еще при сохранении пользователя пароль хэшировать
-	*/
-
-	if password != user.Password {
 		return "", wrongpass
 	}
 	claims := token.Claims{
