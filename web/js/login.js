@@ -1,7 +1,9 @@
+const apiURL = "http://127.0.0.1:8080/login/";
+
 function loginUser(){
 	let login = document.getElementById("login").value;
 	let password = document.getElementById("password").value;
-	let sub = true
+	let sub = true;
 
 	if (login.length <  4) {
 		let loginLabel = document.getElementById("ll");
@@ -21,7 +23,7 @@ function loginUser(){
 		passwordLabel.innerHTML = "Пароль";
 	} 
 	if (!sub){
-		return sub
+		return sub;
 	}
 
 	var requestOptions = {
@@ -34,24 +36,26 @@ function loginUser(){
             password: password
         }),
     };
-	
 	fetch(apiURL, requestOptions)
 		.then(response => {
 			if (!response.ok) {
 				btn = document.getElementById("sub-text");
 				btn.innerHTML = "Ошибка при авторизации";
-			} else {
-				console.log("All ok");
-				tkn = response.json.token;
-				console.log(tkn);
-				var d = new Date();
+			}
+			return response.json()
+		})
+		.then(data => {
+			if (data &&data.token){
+				let tkn = data.token
+				var d =  new Date();
 				d.setTime(d.getTime() + (30*24*60*60*1000));
-				var expires = "expires="+ d.toUTCString();
+				var expires = "expires=" + d.toUTCString();
 				document.cookie = "token" + "=" + tkn + "; expires=" + expires + ";path=/";
-	
-				window.location.replace(getQueryVariable("/"));
+				window.location.replace("/")
+			} else {
+				console.log("Токен не найден")
 			}
 		})
-	return false;
+		return false;
 }
 

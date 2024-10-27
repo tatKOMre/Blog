@@ -51,24 +51,23 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Signin(w http.ResponseWriter, r *http.Request) {
+	ctx := context.WithValue(context.Background(), "request", r)
 	if r.Method == http.MethodPost {
-		type loginreq struct {
+		type log struct {
 			Login    string `json:"login"`
 			Password string `json:"password"`
 		}
-		var req loginreq
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		var l log
+		if err := json.NewDecoder(r.Body).Decode(&l); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		ctx := context.WithValue(context.Background(), "request", r)
-		tkn, err := h.Service.Signin(ctx, req.Login, req.Password)
-
+		tkn, err := h.Service.Signin(ctx, l.Login, l.Password)
 		if err != nil {
 			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 			return
 		}
-
+		print(tkn)
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{"token": tkn})
 	} else if r.Method == http.MethodGet {

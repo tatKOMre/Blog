@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -12,14 +13,24 @@ import (
 )
 
 func (h *Handler) CreatePublication(w http.ResponseWriter, r *http.Request, act *token.Claims) {
-	ctx := context.WithValue(context.Background(), "request", r)
-	var publication model.Publication
-	err := h.Service.CreatePublication(ctx, publication, act)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if r.Method == http.MethodPost {
+		var pub model.Publication
+		if err := json.NewDecoder(r.Body).Decode(&pub); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		ctx := context.WithValue(context.Background(), "request", r)
+		err := h.Service.CreatePublication(ctx, pub, act)
+
+		if err != nil {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	} else if r.Method == http.MethodGet {
+		http.ServeFile(w, r, "web/html/admin.html")
 	}
-	w.WriteHeader(http.StatusCreated)
 }
 
 func (h *Handler) GetAllPublications(w http.ResponseWriter, r *http.Request) {
