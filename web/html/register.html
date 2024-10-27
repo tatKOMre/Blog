@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <title>Registration</title>
-    <link rel="stylesheet" href="../css/registration.css">
-    <script src="../js/register.js"></script>
+    <link rel="stylesheet" href="/web/css/registration.css">
+    <script src="/web/js/register.js"></script>
 </head>
 
 <body>
-    <form method="post" onsubmit="return registerUser();">
+    <form enctype="multipart/form-data" method="post" onsubmit="return registerUser();">
         <label for="login" id="ll">Логин</label>
         <input type="text" placeholder="Логин" id="login" required autocomplete="on">
         <label for="password" id="pl">Пароль</label>
@@ -15,6 +15,7 @@
         <label for="password" id="plr">Повторите пароль</label>
         <input type="password" placeholder="Пароль" id="anpassword" required autocomplete="off">
         <button style="--clr:#e94560" id="sub-text">Зарегистрироваться</button>
+        <a href="/">На главную</a>
     </form>
 </body>
 </html>

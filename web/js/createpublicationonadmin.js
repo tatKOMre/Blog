@@ -30,8 +30,8 @@ function CreatePublication(){
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            login: login,
-            password: password,
+            title: titlelable,
+            text: textlable,
         }),
     };
     fetch(apiURL, requestOptions)
@@ -41,11 +41,6 @@ function CreatePublication(){
                 btn.innerHTML = "Ошибка при создании публикации";
             } else {
                 console.log("All ok");
-                var d = new Date();
-                d.setTime(d.getTime() + (30*24*60*60*1000));
-                var expires = "expires="+ d.toUTCString();
-                document.cookie = "token" + "=" + tkn + "; expires=" + expires + ";path=/";
-
                 window.location.replace(getQueryVariable("to"));
             }
         })

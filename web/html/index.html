@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Блог</title>
+    <link rel="stylesheet" href="/web/css/index.css">
 </head>
 <body>
     <div class="header">
-        <div class="sides">
-          <a href="/web/html/publication.html" class="logo">Публикации</a>
-        </div>
-        <div class="sides">
-          <a href="/web/html/Admin.html" class="logo">Админ панель</a>
-        </div>
-        <div class="sides">
-          <a href="login.html" class="logo logo2">Авторизация</a>
+        <div class="buttons">
+            <div class="grid-column(b)">
+                <a href="/publications/" class="logo tet">Публикации</a>
+            </div>
+           <div class="grid-column(b) center">
+            <a href="/admin/" class="logo tet">Административное крыло</a>
+           </div>
+           <div class="grid-column(b) right">
+            <a href="/login/" class="logo tet">Регистрация</a>
+           </div>
         </div>
         <div class="info">
-          <h1>Зачем играть с судьбой в кости<br>если можно в шахматы?</h1>
-        </div>
-      </div>
-      <div class="content">
-        <h1>
-          Test text
-        </h1>
-      </div>
-      {% for := . %}
-        <h1>{{ .Title }}</h1>
-        
-      {% end %}
+            <h1>Зачем играть с судьбой в кости если можно в шахматы?</h1>
+        </div> 
+    </div>
+    <div class="content">
+        <p class="tet">
+            Тестовое сообщение для теста сообщения(логично)
+        </p>
+    </div>
 </body>
 </html>

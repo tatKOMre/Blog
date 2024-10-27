@@ -1,4 +1,4 @@
-const apiURL = "http://127.0.0.1:8001/register/";
+const apiURL = "http://127.0.0.1:8080/registration/";
 
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
@@ -16,7 +16,7 @@ function registerUser(){
     let login = document.getElementById("login").value;
     let password = document.getElementById("password").value;
     let anpassword = document.getElementById("anpassword").value;
-    let sub = true
+    let sub = true;
 
     if (login.length <  4) {
         let loginLabel = document.getElementById("ll");
@@ -56,7 +56,7 @@ function registerUser(){
         },
         body: JSON.stringify({
             login: login,
-            password: password,
+            password: password
         }),
     };
 
@@ -64,17 +64,10 @@ function registerUser(){
         .then(response => {
             if (!response.ok) {
                 btn = document.getElementById("sub-text");
-                btn.innerHTML = "Ошибка при входе";
+                btn.innerHTML = "Ошибка при регистрации";
             } else {
                 console.log("All ok");
-                tkn = response.json.token;
-                console.log(tkn);
-                var d = new Date();
-                d.setTime(d.getTime() + (30*24*60*60*1000));
-                var expires = "expires="+ d.toUTCString();
-                document.cookie = "token" + "=" + tkn + "; expires=" + expires + ";path=/";
-
-                window.location.replace(getQueryVariable("to"));
+                window.location.replace("/login/");
             }
         })
     return false;

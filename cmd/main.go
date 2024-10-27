@@ -3,19 +3,18 @@ package main
 import (
 	"log"
 	"tatKOM/app"
+	"tatKOM/model"
 	"tatKOM/pkg/db"
 )
 
 func main() {
 
-	parseFlags()
-
 	// подключение к бд
-	appDB, err := db.Connect(
-		"имя db",
-		"порт db",
-		"логин db",
-		"пароль db",
+	appDB, err := db.ConnectToDataBase(
+		"db",
+		"root",
+		"5432",
+		"admin",
 	)
 
 	if err != nil {
@@ -25,12 +24,12 @@ func main() {
 	log.Println("db connected")
 
 	// миграции моделек в бд
-	model.Migrate(appDB)
+	model.AutoMigrate(appDB)
 	log.Println("migration complete")
 
 	blogApp := app.New(appDB, []byte("niggaballs"), ":8080")
 	log.Println("server initialized")
 
 	// запуск сервера
-	usersApp.Run()
+	blogApp.Run()
 }

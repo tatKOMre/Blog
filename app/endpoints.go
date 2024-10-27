@@ -1,16 +1,15 @@
 package app
 
 import (
-	"tatKOM/pkg/middleware"
 	"net/http"
-
-	"github.com/rs/cors"
+	"tatKOM/pkg/middleware"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 // Метод для привязки функция к адресам на сайте
-func (app *App) Route() {
+func (app *App) CreateEndpoints() {
 	r := mux.NewRouter()
 
 	r.Use(middleware.LoggerMW)
@@ -23,26 +22,37 @@ func (app *App) Route() {
 		),
 	)
 
-	// Это чтобы js не выебывался, просто не трогай, сам не ебу че там
+	//Это чтобы js не выебывался, просто не трогай, сам не ебу че там
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 	})
 
 	handler := c.Handler(r)
-
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/html/index.html")
+	})
+	r.HandleFunc("/publications/", app.Handler.GetAllPublications)
+	r.HandleFunc("/login/", app.Handler.Signin)
+	r.HandleFunc("/registration/", app.Handler.SignUp)
+	r.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/html/admin.html")
+	})
 	// Вот тут Привязка
 	/*
-	r.HandleFunc("/login/", app.Handler.Login).
-		Methods(http.MethodPost)
-	Такая хуйня означает, 
-	что функция логин вызовется только при POST запросе по адресу <>.ru/login/
+		r.HandleFunc("/login/", app.Handler.Login).
+			Methods(http.MethodPost)
+		Такая хуйня означает,
+		что функция логин вызовется только при POST запросе по адресу <>.ru/login/
 
-	r.HandleFunc("/fuck/", app.Handler.Nigger)
-	Эта хуйня будет вызывать функцию при запросе по адресу <>.ru/fuck/ с любым методом
+		r.HandleFunc("/fuck/", app.Handler.Nigger)
+		Эта хуйня будет вызывать функцию при запросе по адресу <>.ru/fuck/ с любым методом
 
-	И таким образом ты подвязываешь каждую функцию из gateway к адресу на сайте,
-	к одному адресу модно подвязать несколько функций, если каждая из них обрабатывает свои методы запроса
+		И таким образом ты подвязываешь каждую функцию из gateway к адресу на сайте,
+		к одному адресу модно подвязать несколько функций, если каждая из них обрабатывает свои методы запроса
+
+		Если только для залогиненных, то:
+		r.HandleFunc("/nigga/", app.MW.Auth(app.Handler.Nigga))
 	*/
-	app.Server.Handler = handler
+	(*app).Server.Handler = handler
 }

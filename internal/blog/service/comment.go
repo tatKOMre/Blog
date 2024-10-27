@@ -25,8 +25,8 @@ func (s *Service) CreateComment(ctx context.Context, comment model.Comment, act 
 	result := s.Repository.CreateComment(ctx, comment)
 	return result
 }
-func (s *Service) GetCommentsFor(ctx context.Context, id uint) {
-	s.Repository.GetCommentsFor(ctx, id)
+func (s *Service) GetCommentsFor(ctx context.Context, id uint) ([]model.Comment, error) {
+	return s.Repository.GetCommentsFor(ctx, id)
 }
 func (s *Service) UpdateComment(ctx context.Context, comment model.Comment, act *token.Claims) error {
 	if act.ID != comment.UserID && !act.Permission {

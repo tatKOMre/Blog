@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ панель</title>
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/admin.js"></script>
+    <link rel="stylesheet" href="/web/css/admin.css">
+    <script src="/web/js/createpublicationonadmin.js"></script>
 </head>
 <body>
     <div class="header">
         <div class="sides">
-          <a href="/web/html/publication.html" class="logo">Публикации</a>
+          <a href="/publications/" class="logo tet">Публикации</a>
         </div>
         <div class="sides">
-          <a href="index.html" class="logo logo2">На главную</a>
+          <a href="/" class="logo logo2 tet">На главную</a>
         </div>
         <div class="info">
           <h1>Добро пожаловать, господин</h1>
@@ -22,14 +21,16 @@
       </div>
       <div class="content">
         <div class="sides">
-            <form method="post" onsubmit="return CreatePublication();">
-                <p>
-                    <input type="text" name="title" placeholder="Title" id="title">
+          <h1 class="tet">Новая Публикация</h1>  
+          <form method="post" onsubmit="return CreatePublication();">
+               
+              <p>
+                    <input type="text" name="title" placeholder="Заголовок" id="title" class="text-field__input">
                 </p>
                 <p>
-                    <textarea name="text" placeholder="Text" id="text"></textarea>
+                    <textarea name="text" placeholder="Текст Публикации" id="text" class="text-field__input"></textarea>
                 </p>
-                <input type="submit" value="post">
+                <input type="submit" value="Опубликовать" class="logo_1"> 
             </form>
         </div>
       </div>

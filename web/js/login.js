@@ -20,5 +20,38 @@ function loginUser(){
 		let passwordLabel = document.getElementById("pl");
 		passwordLabel.innerHTML = "Пароль";
 	} 
-	return sub;
+	if (!sub){
+		return sub
+	}
+
+	var requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            login: login,
+            password: password
+        }),
+    };
+	
+	fetch(apiURL, requestOptions)
+		.then(response => {
+			if (!response.ok) {
+				btn = document.getElementById("sub-text");
+				btn.innerHTML = "Ошибка при авторизации";
+			} else {
+				console.log("All ok");
+				tkn = response.json.token;
+				console.log(tkn);
+				var d = new Date();
+				d.setTime(d.getTime() + (30*24*60*60*1000));
+				var expires = "expires="+ d.toUTCString();
+				document.cookie = "token" + "=" + tkn + "; expires=" + expires + ";path=/";
+	
+				window.location.replace(getQueryVariable("/"));
+			}
+		})
+	return false;
 }
+

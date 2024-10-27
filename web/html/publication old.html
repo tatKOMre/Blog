@@ -10,7 +10,7 @@
 <body>
     <div class="header">
         <div class="">
-          <a href="/" class="logo tet">На главную</a>
+          <a href="/" class="logo2">На главную</a>
         </div>
         <div class="info">
           <h1>Публикации великого автора</h1>
@@ -18,11 +18,11 @@
       </div>
       {{ if . }}
         {{ range . }}
-          <h1 class="tet">{{ .Title }}</h1>
-          <p class="tet">{{ .Text }}</p>
+          <h1>{{ .Title }}</h1>
+          <p>{{ .Text }}</p>
         {{ end }}
       {{ else }}
-        <colzag class="tet">Публикаций ещё нет</colzag>
+        <colzag>Публикаций ещё нет</colzag>
       {{ end }}
 </body>
 </html>

@@ -1,11 +1,15 @@
 package app
 
 import (
+	"log"
+	"net/http"
+	"os"
+	handler "tatKOM/internal/blog/gateway/http"
 	"tatKOM/internal/blog/repository"
 	"tatKOM/internal/blog/service"
-	handler "tatKOM/internal/blog/gateway/http"
-	"net/http"
 	"tatKOM/pkg/middleware"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -20,7 +24,6 @@ type App struct {
 
 // Run - Эта функция запускает сервер
 func (app *App) Run() {
-	app.CreateEndpoints()
 	log.Println("server running")
 
 	if err := app.Server.ListenAndServe(); err != nil {
@@ -39,7 +42,7 @@ func New(db *gorm.DB, key []byte, addr string) *App {
 	}
 
 	app.Server = &http.Server{
-		Addr:         addr, // порт
+		Addr:         addr,             // порт
 		WriteTimeout: 15 * time.Second, // таймауты
 		ReadTimeout:  15 * time.Second,
 	}
@@ -49,9 +52,11 @@ func New(db *gorm.DB, key []byte, addr string) *App {
 	// Все слои создаем
 	r := repository.New(db)
 	s := service.New(r, key)
-	h := handler.New(s)
+	h := handler.New(s, key)
 
 	app.Handler = h
+
+	app.CreateEndpoints()
 
 	return app
 }

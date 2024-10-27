@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 	"tatKOM/model"
-	"tatKOM/pkg/cookie"
 	"tatKOM/pkg/token"
 
 	"github.com/gorilla/mux"
@@ -19,24 +18,64 @@ import (
  И так со всеми страницами на сайте, пока что можешь таким образом переделать, потом с папкой app/ разберемся
 */
 
-func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
+func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 	ctx := context.WithValue(context.Background(), "request", r)
 	if r.Method == http.MethodPost {
-		r.ParseForm()
-		user := model.User{
-			Name:       r.FormValue("login"),
-			Password:   r.FormValue("password"),
-			Permission: false,
+		type loginReq struct {
+			Login    string `json:"login"`
+			Password string `json:"password"`
 		}
-		err := h.Service.CreateUser(ctx, user, act)
+
+		var req loginReq
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		user := model.User{
+			Login:      req.Login,
+			Password:   req.Password,
+			Permission: true,
+		}
+
+		err := h.Service.SignUp(ctx, user)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		w.WriteHeader(http.StatusOK)
 	} else if r.Method == http.MethodGet {
 		http.ServeFile(w, r, "web/html/register.html")
 	}
 }
+
+func (h *Handler) Signin(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		type loginreq struct {
+			Login    string `json:"login"`
+			Password string `json:"password"`
+		}
+		var req loginreq
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		ctx := context.WithValue(context.Background(), "request", r)
+		tkn, err := h.Service.Signin(ctx, req.Login, req.Password)
+
+		if err != nil {
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"token": tkn})
+	} else if r.Method == http.MethodGet {
+		http.ServeFile(w, r, "web/html/login.html")
+	}
+}
+
 func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	ctx := context.WithValue(context.Background(), "request", r)
@@ -71,25 +110,4 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, act *token.Cla
 		return
 	}
 	json.NewEncoder(w).Encode(&user)
-}
-
-// Годно
-func (h *Handler) Singin(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		r.ParseForm()
-		login := r.FormValue("login")
-		password := r.FormValue("password")
-		ctx := context.WithValue(context.Background(), "request", r)
-		tkn, err := h.Service.Singin(ctx, login, password)
-
-		if err != nil {
-			http.Redirect(w, r, "/", http.StatusMovedPermanently)
-			return
-		}
-
-		cookie.SetCookie(w, "token", tkn)
-		http.Redirect(w, r, "/", http.StatusMovedPermanently)
-	} else if r.Method == http.MethodGet {
-		http.ServeFile(w, r, "web/html/login.html")
-	}
 }

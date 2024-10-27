@@ -41,7 +41,7 @@ func (s *Service) DeleteUser(ctx context.Context, id uint, act *token.Claims) er
 	result := s.Repository.DeleteUser(ctx, id)
 	return result
 }
-func (s *Service) Singin(ctx context.Context, login string, password string) (string, error) {
+func (s *Service) Signin(ctx context.Context, login string, password string) (string, error) {
 	user, err := s.Repository.GetUserByLogin(ctx, login)
 	if err != nil {
 		return "", err
@@ -52,7 +52,7 @@ func (s *Service) Singin(ctx context.Context, login string, password string) (st
 	}
 	claims := token.Claims{
 		ID:         user.ID,
-		Name:       user.Name,
+		Login:      user.Login,
 		Password:   user.Password,
 		Permission: user.Permission,
 	}
@@ -62,4 +62,9 @@ func (s *Service) Singin(ctx context.Context, login string, password string) (st
 		return "", err
 	}
 	return tkn, err
+}
+func (s *Service) SignUp(ctx context.Context, user model.User) error {
+	user.Password = hash.Hash(user.Password)
+	result := s.Repository.CreateUser(ctx, user)
+	return result
 }
