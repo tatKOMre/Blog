@@ -29,15 +29,14 @@ func (app *App) CreateEndpoints() {
 	})
 
 	handler := c.Handler(r)
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/html/index.html")
-	})
+	r.HandleFunc("/", app.Handler.CheckUserPermission)
 	r.HandleFunc("/publications/", app.Handler.GetAllPublications)
 	r.HandleFunc("/login/", app.Handler.Signin)
 	r.HandleFunc("/registration/", app.Handler.SignUp)
 	r.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/html/admin.html")
 	})
+	r.HandleFunc("/profile/", app.Handler.CheckUserPermission)
 	// Вот тут Привязка
 	/*
 		r.HandleFunc("/login/", app.Handler.Login).

@@ -3,9 +3,11 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"strconv"
 	"tatKOM/model"
+	"tatKOM/pkg/cookie"
 	"tatKOM/pkg/token"
 
 	"github.com/gorilla/mux"
@@ -35,7 +37,7 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 		user := model.User{
 			Login:      req.Login,
 			Password:   req.Password,
-			Permission: true,
+			Permission: false,
 		}
 
 		err := h.Service.SignUp(ctx, user)
@@ -109,4 +111,17 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, act *token.Cla
 		return
 	}
 	json.NewEncoder(w).Encode(&user)
+}
+func (h *Handler) CheckUserPermission(w http.ResponseWriter, r *http.Request) {
+	usr := &token.Claims{}
+	cookie, err := cookie.GetCookie(r, "token")
+	if err == nil {
+		usr, _ = token.ParseJWT(cookie, h.SignKey)
+	}
+
+	tmpl1 := template.Must(template.ParseFiles("./web/html/index.html"))
+	tmpl2 := template.Must(template.ParseFiles("./web/html/profile.html"))
+
+	tmpl1.Execute(w, usr)
+	tmpl2.Execute(w, usr)
 }
