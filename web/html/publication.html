@@ -18,7 +18,10 @@
       </div>
       {{ if . }}
         {{ range . }}
-          <h1 class="tet">{{ .Title }}</h1>
+        <div class="container">  
+        <a><h1 class="tet block1">{{ .Title }}</h1></a>
+          <p class="pros block2">{{ .ID }}</p>
+        </div>
           <p class="tet">{{ .Text }}</p>
         {{ end }}
       {{ else }}

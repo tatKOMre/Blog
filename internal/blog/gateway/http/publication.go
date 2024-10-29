@@ -26,7 +26,6 @@ func (h *Handler) CreatePublication(w http.ResponseWriter, r *http.Request, act 
 			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 			return
 		}
-
 		w.WriteHeader(http.StatusOK)
 	} else if r.Method == http.MethodGet {
 		http.ServeFile(w, r, "web/html/admin.html")

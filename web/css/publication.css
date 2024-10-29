@@ -67,3 +67,15 @@ word-break: normal;
 color: #fff;
 
 }
+.pros{
+  color: rgba(255,255,255,0.5)
+}
+.container {
+  display: flex;
+}
+
+.block1, .block2 {
+  flex: 1;
+  margin: 2px;
+  padding: 3px;
+}

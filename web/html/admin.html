@@ -22,15 +22,15 @@
       <div class="content">
         <div class="sides">
           <h1 class="tet">Новая Публикация</h1>  
-          <form method="post" onsubmit="return CreatePublication();">
-               
+          <form enctype="multipart/form-data" form method="post" onsubmit="return CreatePublication();">
+               <p class="tet" id="zag">Заголовок</p>
               <p>
                     <input type="text" name="title" placeholder="Заголовок" id="title" class="text-field__input">
                 </p>
                 <p>
                     <textarea name="text" placeholder="Текст Публикации" id="text" class="text-field__input"></textarea>
                 </p>
-                <input type="submit" value="Опубликовать" class="logo_1"> 
+                <input type="submit" value="Опубликовать" class="logo_1" id="btn"> 
             </form>
         </div>
       </div>

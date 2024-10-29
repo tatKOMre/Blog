@@ -9,10 +9,11 @@ function checkCookie() {
 console.log(checkCookie())
 function hideRegisterButton() {
     const registerButton = document.getElementById('regb');
+    const profileButton = document.getElementById('profile')
     
     if (checkCookie()) {
         registerButton.classList.add('hidden'); // Скрыть кнопку
-        registerButton.classList.remove('hidden') // показать кнопку
+        profileButton.classList.remove('hidden') // показать кнопку
     }
 }
 

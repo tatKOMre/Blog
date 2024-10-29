@@ -119,9 +119,18 @@ func (h *Handler) CheckUserPermission(w http.ResponseWriter, r *http.Request) {
 		usr, _ = token.ParseJWT(cookie, h.SignKey)
 	}
 
-	tmpl1 := template.Must(template.ParseFiles("./web/html/index.html"))
-	tmpl2 := template.Must(template.ParseFiles("./web/html/profile.html"))
+	tmpl := template.Must(template.ParseFiles("./web/html/index.html"))
 
-	tmpl1.Execute(w, usr)
-	tmpl2.Execute(w, usr)
+	tmpl.Execute(w, usr)
+}
+func (h *Handler) CheckUserPermissionProfile(w http.ResponseWriter, r *http.Request) {
+	usr := &token.Claims{}
+	cookie, err := cookie.GetCookie(r, "token")
+	if err == nil {
+		usr, _ = token.ParseJWT(cookie, h.SignKey)
+	}
+
+	tmpl := template.Must(template.ParseFiles("./web/html/profile.html"))
+
+	tmpl.Execute(w, usr)
 }

@@ -36,7 +36,8 @@ func (app *App) CreateEndpoints() {
 	r.HandleFunc("/admin/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/html/admin.html")
 	})
-	r.HandleFunc("/profile/", app.Handler.CheckUserPermission)
+	r.HandleFunc("/profile/", app.Handler.CheckUserPermissionProfile)
+	r.HandleFunc("/admin/crpub", app.MW.Auth(app.Handler.CreatePublication))
 	// Вот тут Привязка
 	/*
 		r.HandleFunc("/login/", app.Handler.Login).

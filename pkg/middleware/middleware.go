@@ -20,7 +20,7 @@ type HandlerFunc func(w http.ResponseWriter, r *http.Request, act *token.Claims)
 
 func (m *Middleware) Auth(f HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, _ := cookie.GetCookie(r, "login")
+		cookie, _ := cookie.GetCookie(r, "token")
 		tkn, err := token.ParseJWT(cookie, m.Signkey)
 		if err != nil {
 			http.Error(w, "auth error", http.StatusForbidden)
@@ -32,7 +32,7 @@ func (m *Middleware) Auth(f HandlerFunc) http.HandlerFunc {
 
 func (m *Middleware) NotAuth(f HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, _ := cookie.GetCookie(r, "login")
+		cookie, _ := cookie.GetCookie(r, "token")
 		tkn, err := token.ParseJWT(cookie, m.Signkey)
 		if err != nil {
 			f(w, r, tkn)
