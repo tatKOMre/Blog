@@ -38,6 +38,7 @@ func (app *App) CreateEndpoints() {
 	})
 	r.HandleFunc("/profile/", app.Handler.CheckUserPermissionProfile)
 	r.HandleFunc("/admin/crpub", app.MW.Auth(app.Handler.CreatePublication))
+	r.HandleFunc("/admin/delpub", app.MW.Auth(app.Handler.DeletePublication))
 	// Вот тут Привязка
 	/*
 		r.HandleFunc("/login/", app.Handler.Login).

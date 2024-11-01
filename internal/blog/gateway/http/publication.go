@@ -27,8 +27,6 @@ func (h *Handler) CreatePublication(w http.ResponseWriter, r *http.Request, act 
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-	} else if r.Method == http.MethodGet {
-		http.ServeFile(w, r, "web/html/admin.html")
 	}
 }
 
@@ -43,20 +41,33 @@ func (h *Handler) GetAllPublications(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl := template.Must(template.ParseFiles("./web/html/publication.html"))
-
 	tmpl.Execute(w, publications)
 }
 
 func (h *Handler) DeletePublication(w http.ResponseWriter, r *http.Request, act *token.Claims) {
-	id, _ := strconv.Atoi(mux.Vars(r)["id"])
-	ctx := context.WithValue(context.Background(), "request", r)
-	err := h.Service.DeletePublication(ctx, uint(id), act)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if r.Method == http.MethodPost {
+		type reqData struct {
+			ID uint `json:"id"`
+		}
+		var id reqData
+		print("312123123123123123123123123")
+		err := json.NewDecoder(r.Body).Decode(&id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		print("sdaasdasdsdaasd")
+		ctx := context.WithValue(context.Background(), "request", r)
+		err = h.Service.DeletePublication(ctx, id.ID, act)
+
+		if err != nil {
+			http.Error(w, "server error", http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
 	}
-	w.WriteHeader(http.StatusOK)
 }
+
 func (h *Handler) UpdatePublication(w http.ResponseWriter, r *http.Request, act *token.Claims) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	ctx := context.WithValue(context.Background(), "request", r)

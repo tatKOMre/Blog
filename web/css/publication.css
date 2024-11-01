@@ -3,6 +3,7 @@ html,body{
   height:120%;
   font-family: 'Josefin Sans', sans-serif;
   background-color: #0000007a;
+
 }
 .header{
   position:relative;
@@ -61,21 +62,8 @@ text-shadow:0 2px 3px rgba(0,0,0,0.2)
 padding:5% 10%;
 text-align:justify;
 word-break: normal;
-
-}
-.tet{
-color: #fff;
-
+background-color: #454545 ;
 }
 .pros{
   color: rgba(255,255,255,0.5)
-}
-.container {
-  display: flex;
-}
-
-.block1, .block2 {
-  flex: 1;
-  margin: 2px;
-  padding: 3px;
 }

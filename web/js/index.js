@@ -6,7 +6,6 @@ function checkCookie() {
         return true;
     }
 }
-console.log(checkCookie())
 function hideRegisterButton() {
     const registerButton = document.getElementById('regb');
     const profileButton = document.getElementById('profile')

@@ -58,9 +58,10 @@ html,body{
   
 }
 .content{  
-  padding:20% 10%;
+  padding:10% 10%;
   text-align:justify;
   word-break: normal;
+  background-color: #454545;
   
 }
 .tet{

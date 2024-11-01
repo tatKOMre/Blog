@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Публикации</title>
     <link rel="stylesheet" href="/web/css/publication.css">
-    <link rel="stylesheet" href="/web/css/style.css">
+    <link rel="stylesheet" href="/web/css/text.css">
 </head>
 <body>
     <div class="header">
@@ -16,16 +16,16 @@
           <h1>Публикации великого автора</h1>
         </div>
       </div>
-      {{ if . }}
-        {{ range . }}
-        <div class="container">  
-        <a><h1 class="tet block1">{{ .Title }}</h1></a>
-          <p class="pros block2">{{ .ID }}</p>
-        </div>
-          <p class="tet">{{ .Text }}</p>
+      <div class="content">
+        {{ if . }}
+          {{ range . }}
+            <a><h1 class="tet zagtext">{{ .Title }}</h1></a>
+            <p class="pros">{{ .ID }}</p>
+            <p class="tet pubtext" style="white-space: pre-line">{{ .Text }}</p>
+          {{ end }}
+        {{ else }}
+          <p class="tet pubtext">Публикаций ещё нет</p>
         {{ end }}
-      {{ else }}
-        <colzag class="tet">Публикаций ещё нет</colzag>
-      {{ end }}
+      </div>
 </body>
 </html>

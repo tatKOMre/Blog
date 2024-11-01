@@ -6,6 +6,8 @@
     <title>Административное крыло</title>
     <link rel="stylesheet" href="/web/css/admin.css">
     <script src="/web/js/createpublicationonadmin.js"></script>
+    <script src="/web/js/deletepublicationbyadmin.js"></script>
+    <link rel="stylesheet" href="/web/css/text.css">
 </head>
 <body>
     <div class="header">
@@ -20,19 +22,34 @@
         </div>
       </div>
       <div class="content">
-        <div class="sides">
           <h1 class="tet">Новая Публикация</h1>  
           <form enctype="multipart/form-data" form method="post" onsubmit="return CreatePublication();">
                <p class="tet" id="zag">Заголовок</p>
               <p>
-                    <input type="text" name="title" placeholder="Заголовок" id="title" class="text-field__input">
+                    <input type="text" name="title" placeholder="Заголовок" id="crpubtitle" class="text-field__input">
                 </p>
                 <p>
-                    <textarea name="text" placeholder="Текст Публикации" id="text" class="text-field__input"></textarea>
+                    <textarea name="text" placeholder="Текст Публикации" id="crpubtext" class="text-field__input"></textarea>
                 </p>
+                <script type="text/javascript">
+                  textarea = document.querySelector("#crpubtext");
+                  textarea.addEventListener('input', autoResize, false);
+          
+                  function autoResize() {
+                      this.style.height = 'auto';
+                      this.style.height = this.scrollHeight + 'px';
+                  }
+              </script>
                 <input type="submit" value="Опубликовать" class="logo_1" id="btn"> 
             </form>
-        </div>
+        <form enctype="multipart/form-data" form method="post" onsubmit="return DeletePublication();">
+          <h1 class="tet pubtitle" id="zagdel">Удаление публикации</h1>
+          <p class="tet pubtext">введите id</p>
+         <p>
+               <input type="text" name="title" placeholder="ID для удаления" id="delpubid" class="text-field__input">
+           </p>
+           <input type="submit" value="Удалить" class="logo_1" id="btndel"> 
+       </form>
       </div>
 </body>
 </html>

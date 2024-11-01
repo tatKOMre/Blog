@@ -1,16 +1,15 @@
 const apiURL = "http://127.0.0.1:8080/admin/crpub";
 
-
 function CreatePublication(){
-	let title = document.getElementById("title").value;
+	let title = document.getElementById("crpub").value;
 	let text = document.getElementById("text").value;
 	let sub = true;
     if (title.length < 3){
-        let titlelabel = document.getElementById("title");
+        let titlelabel = document.getElementById("crpubtitle");
         titlelabel.placeholder = "Название слишком короткое";
         sub = false;
     }else {
-        let titlelabel = document.getElementById("title");
+        let titlelabel = document.getElementById("crpubtitle");
         titlelabel.placeholder = "Заголовок1";
     }
     if (text.length < 10){
@@ -44,7 +43,6 @@ function CreatePublication(){
                 console.log("All ok");;
                 btn = document.getElementById("btn")
                 btn.value = "Публикация создана";
-                window.location.replace("/admin/")
             }
         })
     return false;
