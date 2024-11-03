@@ -1,11 +1,14 @@
 package app
 
 import (
+	"crypto/tls"
+	"log"
 	"net/http"
 	"tatKOM/pkg/middleware"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 // Метод для привязки функция к адресам на сайте
@@ -27,6 +30,20 @@ func (app *App) CreateEndpoints() {
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 	})
+	certManager := autocert.Manager{
+		Prompt: autocert.AcceptTOS,
+		Cache:  autocert.DirCache("certs"),
+	}
+	server := &http.Server{
+		Addr:    ":443",
+		Handler: r,
+		TLSConfig: &tls.Config{
+			GetCertificate: certManager.GetCertificate,
+		},
+	}
+	go http.ListenAndServe(":8080", certManager.HTTPHandler(nil))
+	server.ListenAndServeTLS("", "")
+	log.Println("certificates  are ready")
 
 	handler := c.Handler(r)
 	r.HandleFunc("/", app.Handler.CheckUserPermission)
@@ -39,6 +56,7 @@ func (app *App) CreateEndpoints() {
 	r.HandleFunc("/profile/", app.Handler.CheckUserPermissionProfile)
 	r.HandleFunc("/admin/crpub", app.MW.Auth(app.Handler.CreatePublication))
 	r.HandleFunc("/admin/delpub", app.MW.Auth(app.Handler.DeletePublication))
+
 	// Вот тут Привязка
 	/*
 		r.HandleFunc("/login/", app.Handler.Login).
