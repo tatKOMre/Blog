@@ -41,7 +41,7 @@ func (app *App) CreateEndpoints() {
 			GetCertificate: certManager.GetCertificate,
 		},
 	}
-	go http.ListenAndServe(":8080", certManager.HTTPHandler(nil))
+	go http.ListenAndServe(":80", certManager.HTTPHandler(nil))
 	server.ListenAndServeTLS("", "")
 	log.Println("certificates  are ready")
 
