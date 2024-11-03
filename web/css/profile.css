@@ -64,9 +64,10 @@ html,body{
   background-color: #454545;
   
 }
-.tet{
-  color: #fff;
-
+.zagcontent{  
+  padding: 10% 20%;
+  text-align:justify;
+  word-break: normal; ;
 }
 .hidden{
   display: none;

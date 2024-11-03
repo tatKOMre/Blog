@@ -64,6 +64,12 @@ html,body{
   background-color: #454545;
   
 }
+.headcontent{  
+  padding:5% 10%;
+  text-align:justify;
+  word-break: normal;
+  
+}
 .tet{
   color: #fff;
 
