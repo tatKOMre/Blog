@@ -27,7 +27,7 @@ func main() {
 	model.AutoMigrate(appDB)
 	log.Println("migration complete")
 
-	blogApp := app.New(appDB, []byte("niggaballs"), ":8080")
+	blogApp := app.New(appDB, []byte("niggaballs"))
 	log.Println("server initialized")
 
 	// запуск сервера

@@ -1,15 +1,15 @@
 package app
 
 import (
+	"crypto/tls"
 	"log"
 	"net/http"
-	"os"
 	handler "tatKOM/internal/blog/gateway/http"
 	"tatKOM/internal/blog/repository"
 	"tatKOM/internal/blog/service"
 	"tatKOM/pkg/middleware"
-	"time"
 
+	"golang.org/x/crypto/acme/autocert"
 	"gorm.io/gorm"
 )
 
@@ -19,6 +19,7 @@ type App struct {
 	Server  *http.Server
 	MW      *middleware.Middleware
 	SignKey []byte
+	Manager autocert.Manager
 	DB      *gorm.DB
 }
 
@@ -30,21 +31,28 @@ func (app *App) Run() {
 		log.Println(err)
 	}
 
-	log.Println("shutting down")
-	os.Exit(0)
+	go http.ListenAndServe(":80", app.Manager.HTTPHandler(nil))
+	app.Server.ListenAndServeTLS("", "")
+	log.Println("certificates  are ready")
 }
 
 // New - создание структуры App
-func New(db *gorm.DB, key []byte, addr string) *App {
+func New(db *gorm.DB, key []byte) *App {
 	app := &App{
 		DB:      db,
 		SignKey: key,
 	}
 
+	app.Manager = autocert.Manager{
+		Prompt: autocert.AcceptTOS,
+		Cache:  autocert.DirCache("certs"),
+	}
+
 	app.Server = &http.Server{
-		Addr:         addr,             // порт
-		WriteTimeout: 15 * time.Second, // таймауты
-		ReadTimeout:  15 * time.Second,
+		Addr: ":443",
+		TLSConfig: &tls.Config{
+			GetCertificate: app.Manager.GetCertificate,
+		},
 	}
 
 	app.MW = middleware.New(app.SignKey)
