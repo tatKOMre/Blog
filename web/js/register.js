@@ -1,4 +1,4 @@
-const apiURL = "http://127.0.0.1:8080/registration/";
+const apiURL = "https://protatkom.ru/registration/";
 
 function registerUser(){
     let login = document.getElementById("login").value;

@@ -1,4 +1,4 @@
-const apiURL = "http://127.0.0.1:8080/admin/crpub";
+const apiURL = "https://protatkom.ru/admin/crpub";
 
 function CreatePublication(){
 	let title = document.getElementById("crpubtitle").value;

@@ -1,4 +1,4 @@
-const apiURL = "http://127.0.0.1:8080/login/";
+const apiURL = "https://protatkom.ru/login/";
 
 function loginUser(){
 	let login = document.getElementById("login").value;

@@ -1,4 +1,4 @@
-const apiURL1 = "http://127.0.0.1:8080/admin/delpub";
+const apiURL1 = "https://protatkom.ru/admin/delpub";
 
 function DeletePublication(){
 	let id = document.getElementById("delpubid").value;
