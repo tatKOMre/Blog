@@ -14,7 +14,7 @@ func ConnectToDataBase(dbName, dbPass, dbPort, dbUser string) (*gorm.DB, error) 
 		"port=" + dbPort,
 		"user=" + dbUser,
 		"password=" + dbPass,
-		"host=PostSQL",
+		"host=127.0.0.1",
 		"sslmode=disable",
 	}
 	db, err := gorm.Open(postgres.Open(strings.Join(dsn, " ")), &gorm.Config{

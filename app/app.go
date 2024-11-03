@@ -1,7 +1,6 @@
 package app
 
 import (
-	"crypto/tls"
 	"log"
 	"net/http"
 	handler "tatKOM/internal/blog/gateway/http"
@@ -9,6 +8,7 @@ import (
 	"tatKOM/internal/blog/service"
 	"tatKOM/pkg/middleware"
 
+	"github.com/gin-gonic/autotls"
 	"golang.org/x/crypto/acme/autocert"
 	"gorm.io/gorm"
 )
@@ -16,7 +16,7 @@ import (
 // App - структура
 type App struct {
 	Handler *handler.Handler
-	Server  *http.Server
+	Router  http.Handler
 	MW      *middleware.Middleware
 	SignKey []byte
 	Manager autocert.Manager
@@ -25,15 +25,17 @@ type App struct {
 
 // Run - Эта функция запускает сервер
 func (app *App) Run() {
-	log.Println("server running")
+	log.Println("certificates  are ready")
 
-	if err := app.Server.ListenAndServe(); err != nil {
-		log.Println(err)
+	m := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("protatkom.ru"),
+		Cache:      autocert.DirCache("/var/www/.cache"),
 	}
 
-	go http.ListenAndServe(":80", app.Manager.HTTPHandler(nil))
-	app.Server.ListenAndServeTLS("", "")
-	log.Println("certificates  are ready")
+	log.Println("server running")
+	log.Fatal(autotls.RunWithManager(app.Router, &m))
+
 }
 
 // New - создание структуры App
@@ -41,18 +43,6 @@ func New(db *gorm.DB, key []byte) *App {
 	app := &App{
 		DB:      db,
 		SignKey: key,
-	}
-
-	app.Manager = autocert.Manager{
-		Prompt: autocert.AcceptTOS,
-		Cache:  autocert.DirCache("certs"),
-	}
-
-	app.Server = &http.Server{
-		Addr: ":443",
-		TLSConfig: &tls.Config{
-			GetCertificate: app.Manager.GetCertificate,
-		},
 	}
 
 	app.MW = middleware.New(app.SignKey)

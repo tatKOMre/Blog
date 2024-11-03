@@ -56,5 +56,5 @@ func (app *App) CreateEndpoints() {
 		Если только для залогиненных, то:
 		r.HandleFunc("/nigga/", app.MW.Auth(app.Handler.Nigga))
 	*/
-	(*app).Server.Handler = handler
+	(*app).Router = handler
 }

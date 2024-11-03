@@ -38,5 +38,8 @@ services:
       - 80:80
       - 443:443
 
+    volumes:
+      - ./certcache:/var/www/.cache
+
     depends_on:
       - PostSQL
